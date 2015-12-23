@@ -56,5 +56,4 @@ public class ItemTouchCallbacks extends ItemTouchHelper.SimpleCallback {
         // remove from adapter
         adapter.removeItem(viewHolder.getAdapterPosition());
     }
-
 }

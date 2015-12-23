@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.college.android.itomer.recyclerviewswipetoremoveandmove.MainActivity">
+    android:id="@+id/coord"
+    tools:context="org.college.android.itomer.recyclerviewswipetoremoveandmove.AddMovieActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,14 +22,26 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_add_movie" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_share_white_24dp" />
+        app:layout_anchor="@+id/coord"
+        app:layout_anchorGravity="bottom|left|start"
+        android:src="@drawable/ic_hd_movies" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/tilPoster"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="#26c6da"
+        app:backgroundTint="#26c6da"
+        android:src="@drawable/ic_add_circle_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

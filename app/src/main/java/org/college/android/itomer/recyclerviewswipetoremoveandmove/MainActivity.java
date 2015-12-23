@@ -9,9 +9,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,14 +43,29 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar!=null) {
+        if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_hd_movies);
             actionBar.setDisplayHomeAsUpEnabled(true);
-
         }
         initRecyclerView();
         initItemTouchHelper();
+        testParse();
+    }
+
+    private void testParse() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Contact");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                for (ParseObject item : objects) {
+                    String name = item.getString("name");
+                    String phone = item.getString("phone");
+                    Log.d("", name + ", " + phone);
+                }
+            }
+        });
+
     }
 
     private void initRecyclerView() {

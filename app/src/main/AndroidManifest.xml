@@ -3,15 +3,30 @@
     package="org.college.android.itomer.recyclerviewswipetoremoveandmove">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".AppManager"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.parse.APPLICATION_ID"
+            android:value="Plathp5UOC3kLwsHzk3VRWpbNwNLKZEzptCtDCCA" />
+        <meta-data
+            android:name="com.parse.CLIENT_KEY"
+            android:value="31hL4wqnU7eOAjPiU5GmOKS8BvvTbO4fYM2KzwaB" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".AddMovieActivity"
+            android:label="@string/title_activity_add_movie"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

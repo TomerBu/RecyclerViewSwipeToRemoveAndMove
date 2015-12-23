@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">RecyclerViewSwipeToRemoveAndMove</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_add_movie">AddMovieActivity</string>
+    <string name="et_movie_title">Movie Title</string>
+    <string name="et_movie_description">Movie Description</string>
+    <string name="et_movie_poster">Movie Poster</string>
 </resources>
