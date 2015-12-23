@@ -3,10 +3,12 @@ package org.college.android.itomer.recyclerviewswipetoremoveandmove;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rvDemo;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    private RecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,19 +36,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar!=null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_hd_movies);
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
+        }
+        initRecyclerView();
+        initItemTouchHelper();
+    }
+
+    private void initRecyclerView() {
         List<Movie> movies = initDummyData();
-        RecyclerAdapter adapter = new RecyclerAdapter(movies);
+        adapter = new RecyclerAdapter(movies);
         rvDemo.setAdapter(adapter);
         rvDemo.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+    }
 
+    private void initItemTouchHelper() {
+        //Adding Item Touch Helper
+        ItemTouchCallbacks cal = new ItemTouchCallbacks(adapter);
+        ItemTouchHelper helper = new ItemTouchHelper(cal);
+        helper.attachToRecyclerView(rvDemo);
     }
 
     private List<Movie> initDummyData() {
@@ -61,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
         return movies;
     }
 
+    @OnClick(R.id.fab)
+    void clickedFab(View fab) {
+        View.OnClickListener addItems = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.addItems(initDummyData());
+                rvDemo.scrollToPosition(0);
+            }
+        };
+
+        Snackbar.make(fab, "Add Dummy Items", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Add!", addItems).show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -74,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        System.out.println(item);
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

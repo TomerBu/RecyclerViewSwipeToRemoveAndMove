@@ -50,6 +50,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
         return data.size();
     }
 
+    public void moveItem(int fromPos, int toPos) {
+        Movie from = data.get(fromPos);
+        Movie to = data.set(toPos, from);
+        data.set(fromPos, to);
+        notifyItemMoved(fromPos, toPos);
+    }
+
+    public void removeItem(int position) {
+        if (position < 0) return;
+
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void addItems(List<Movie> movies) {
+        data.addAll(0,movies);
+        notifyItemRangeInserted(0,movies.size());
+    }
+
     public static class DataViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ivItem)
         ImageView ivItem;
