@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,31 +47,36 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_hd_movies);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        initRecyclerView();
-        initItemTouchHelper();
-        testParse();
+        //initRecyclerView();
+        loadMoviesFromParse();
     }
 
-    private void testParse() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Contact");
+    private void loadMoviesFromParse() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(AddMovieActivity.MOVIE);
+        final List<Movie> movieList = new ArrayList<>();
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                for (ParseObject item : objects) {
-                    String name = item.getString("name");
-                    String phone = item.getString("phone");
-                    Log.d("", name + ", " + phone);
+                if (e == null && objects != null) {
+                    for (ParseObject item : objects) {
+                        String title = item.getString(AddMovieActivity.TITLE);
+                        String description = item.getString(AddMovieActivity.DESCRIPTION);
+                        String posterURL = item.getString(AddMovieActivity.POSTER);
+                        Movie m = new Movie(title, description, posterURL);
+                        movieList.add(m);
+                    }
+                    initRecyclerView(movieList);
                 }
             }
         });
-
     }
 
-    private void initRecyclerView() {
-        List<Movie> movies = initDummyData();
+    private void initRecyclerView(List<Movie> movies) {
         adapter = new RecyclerAdapter(movies);
         rvDemo.setAdapter(adapter);
         rvDemo.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        initItemTouchHelper();
     }
 
     private void initItemTouchHelper() {
@@ -82,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
         helper.attachToRecyclerView(rvDemo);
     }
 
+    private void initRecyclerView() {
+        List<Movie> movies = initDummyData();
+        adapter = new RecyclerAdapter(movies);
+        rvDemo.setAdapter(adapter);
+        rvDemo.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+    }
     private List<Movie> initDummyData() {
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
@@ -92,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
             movies.add(new Movie("Warcraft", "Fleeing their dying home to colonize another, fearsome orc warriors invade the peaceful realm of Azeroth.", "http://assets.vg247.com/current//2015/07/warcraft_movie_lothar.jpg-large.jpg"));
             movies.add(new Movie("Alice in Wonderland", "Alice in Wonderland: Through the Looking Glass ", "http://vignette1.wikia.nocookie.net/disney/images/7/7e/Alice_In_Wonderland_(2010)_cover.jpg/revision/latest?cb=20120519233959"));
         }
+
 
         return movies;
     }

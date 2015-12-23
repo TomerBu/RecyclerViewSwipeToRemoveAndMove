@@ -9,6 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -16,6 +21,10 @@ import butterknife.OnClick;
 
 public class AddMovieActivity extends AppCompatActivity {
 
+    public static final String MOVIE = "Movie" ;
+    public static final String TITLE = "title" ;
+    public static final String DESCRIPTION = "description" ;
+    public static final String POSTER = "poster" ;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.etMovieTitle)
@@ -48,12 +57,28 @@ public class AddMovieActivity extends AppCompatActivity {
 
     @OnClick(R.id.fabAdd)
     void add(View v) {
+        ParseObject movie = new ParseObject(MOVIE);
+        movie.put(TITLE, etMovieTitle.getText().toString());
+        movie.put(DESCRIPTION, etMovieDescription.getText().toString());
+        movie.put(POSTER, etMoviePoster.getText().toString());
 
+        movie.saveEventually(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(AddMovieActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                    etMoviePoster.setText("");
+                    etMovieDescription.setText("");
+                    etMovieTitle.setText("");
+                } else
+                    Toast.makeText(AddMovieActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick(R.id.fabList)
     void list(View v) {
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

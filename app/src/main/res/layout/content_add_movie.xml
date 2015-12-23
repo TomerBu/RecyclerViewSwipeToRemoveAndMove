@@ -22,7 +22,9 @@
             android:id="@+id/etMovieTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/et_movie_title" />
+            android:hint="@string/et_movie_title"
+            android:inputType="textCapWords"
+            />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -38,7 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:hint="@string/et_movie_description" />
+            android:hint="@string/et_movie_description"
+            android:inputType="textAutoCorrect"/>
     </android.support.design.widget.TextInputLayout>
 
 
@@ -50,6 +53,7 @@
 
         <EditText
             android:id="@+id/etMoviePoster"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
