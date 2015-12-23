@@ -1,0 +1,61 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    app:cardCornerRadius="@dimen/activity_vertical_margin"
+    app:cardElevation="@dimen/activity_vertical_margin"
+    app:contentPadding="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/ivItem"
+            android:elevation="1dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="centerInside"
+
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/tvtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/ivItem"
+            android:text="Lorem Ipsum Title" />
+
+        <View
+            android:id="@+id/lineSep"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_alignLeft="@+id/tvtitle"
+            android:layout_alignRight="@+id/tvtitle"
+            android:layout_below="@+id/tvtitle"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lineSep"
+            android:padding="4dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/ivItem"
+            android:text="This is the content, content, content and some more content" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
