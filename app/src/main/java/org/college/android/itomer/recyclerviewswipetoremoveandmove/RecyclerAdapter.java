@@ -1,5 +1,10 @@
 package org.college.android.itomer.recyclerviewswipetoremoveandmove;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +15,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,6 +49,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
 
         holder.tvtitle.setText(item.getTitle());
         holder.tvDescription.setText(item.getDescription());
+        pallete(holder);
+    }
+
+    void pallete(final DataViewHolder holder) {
+        Context context = holder.tvtitle.getContext();
+        //TODO: Call this method instead of loading the image to the imageView in the viewHolder.
+        //When the Image is loaded into the target -> take it's Muted color and use it as a background
+        //Test how to use the target with maximum efficiency so we don't waste memory
+        //It looks like we will share a reference so it's not bad. only that we need to verify that the
+        //ImageView will not hold a reference to the Bitmap once it's not in use.
+//        Picasso.with(context).load("").into(new Target() {
+//            @Override
+//            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//
+//            }
+//            public void onBitmapFailed(Drawable errorDrawable) {
+//
+//            }
+//            public void onPrepareLoad(Drawable placeHolderDrawable) {
+//
+//            }
+//        });
+        Bitmap myBitmap = BitmapFactory.decodeResource(
+                context.getResources(), R.mipmap.ic_launcher
+        );
+        if (myBitmap != null && !myBitmap.isRecycled()) {
+            AsyncTask<Bitmap, Void, Palette> palette =
+                    Palette.from(myBitmap).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    int bgColor = palette.getLightMutedColor(0x000/*default*/);
+                    holder.cardView.setBackgroundColor(bgColor);
+                    /* Vibrant, Vibrant Dark, Vibrant Light,
+                     Muted, Muted Dark, Muted Light */
+                }
+            });
+        }
     }
 
     @Override
@@ -65,8 +108,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
     }
 
     public void addItems(List<Movie> movies) {
-        data.addAll(0,movies);
-        notifyItemRangeInserted(0,movies.size());
+        if (data == null) data = new ArrayList<>();
+        data.addAll(0, movies);
+        notifyItemRangeInserted(0, movies.size());
     }
 
     public static class DataViewHolder extends RecyclerView.ViewHolder {

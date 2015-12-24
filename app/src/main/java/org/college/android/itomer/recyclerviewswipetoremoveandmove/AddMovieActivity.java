@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -21,10 +23,10 @@ import butterknife.OnClick;
 
 public class AddMovieActivity extends AppCompatActivity {
 
-    public static final String MOVIE = "Movie" ;
-    public static final String TITLE = "title" ;
-    public static final String DESCRIPTION = "description" ;
-    public static final String POSTER = "poster" ;
+    public static final String MOVIE = "Movie";
+    public static final String TITLE = "title";
+    public static final String DESCRIPTION = "description";
+    public static final String POSTER = "poster";
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.etMovieTitle)
@@ -78,7 +80,14 @@ public class AddMovieActivity extends AppCompatActivity {
 
     @OnClick(R.id.fabList)
     void list(View v) {
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
+
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        // Pass data object in the bundle and populate details activity.
+        // intent.putExtra(MainActivity.EXTRA_MOVIE, "blabla");
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, fabList, "fab");
+        ActivityCompat.startActivity(AddMovieActivity.this, intent, options.toBundle());
     }
 }

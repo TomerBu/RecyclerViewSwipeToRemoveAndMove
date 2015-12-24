@@ -12,6 +12,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
                         movieList.add(m);
                     }
                     initRecyclerView(movieList);
-                }
+                } else
+                    Toast.makeText(MainActivity.this, e != null ? e.getLocalizedMessage() : "Shoo...", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -91,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new RecyclerAdapter(movies);
         rvDemo.setAdapter(adapter);
         rvDemo.setLayoutManager(new LinearLayoutManager(getBaseContext()));
+        initItemTouchHelper();
     }
+
     private List<Movie> initDummyData() {
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
@@ -107,11 +111,14 @@ public class MainActivity extends AppCompatActivity {
         return movies;
     }
 
+
     @OnClick(R.id.fab)
     void clickedFab(View fab) {
         View.OnClickListener addItems = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (adapter == null)
+                    initRecyclerView();
                 adapter.addItems(initDummyData());
                 rvDemo.scrollToPosition(0);
             }
