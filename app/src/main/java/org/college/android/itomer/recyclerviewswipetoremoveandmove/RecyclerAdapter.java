@@ -2,8 +2,7 @@ package org.college.android.itomer.recyclerviewswipetoremoveandmove;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.DeleteCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,50 +45,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
     @Override
     public void onBindViewHolder(DataViewHolder holder, int position) {
         Movie item = data.get(position);
-
-        Picasso.with(holder.tvtitle.getContext()).
-                load(item.getImageURL()).
-                into(holder.ivItem);
-
+        loadImage(holder, item);
         holder.tvtitle.setText(item.getTitle());
         holder.tvDescription.setText(item.getDescription());
-        pallete(holder);
     }
 
-    void pallete(final DataViewHolder holder) {
+    void loadImage(final DataViewHolder holder, Movie item) {
         Context context = holder.tvtitle.getContext();
-        //TODO: Call this method instead of loading the image to the imageView in the viewHolder.
-        //When the Image is loaded into the target -> take it's Muted color and use it as a background
-        //Test how to use the target with maximum efficiency so we don't waste memory
-        //It looks like we will share a reference so it's not bad. only that we need to verify that the
-        //ImageView will not hold a reference to the Bitmap once it's not in use.
-//        Picasso.with(context).load("").into(new Target() {
-//            @Override
-//            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//
-//            }
-//            public void onBitmapFailed(Drawable errorDrawable) {
-//
-//            }
-//            public void onPrepareLoad(Drawable placeHolderDrawable) {
-//
-//            }
-//        });
-        Bitmap myBitmap = BitmapFactory.decodeResource(
-                context.getResources(), R.mipmap.ic_launcher
-        );
-        if (myBitmap != null && !myBitmap.isRecycled()) {
-            AsyncTask<Bitmap, Void, Palette> palette =
-                    Palette.from(myBitmap).generate(new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-                    int bgColor = palette.getLightMutedColor(0x000/*default*/);
-                    holder.cardView.setBackgroundColor(bgColor);
-                    /* Vibrant, Vibrant Dark, Vibrant Light,
-                     Muted, Muted Dark, Muted Light */
-                }
-            });
+        if (item.getImageURL() == null || item.getImageURL().isEmpty()) {
+            item.setImageURL("None");
         }
+        Picasso.with(context).load(item.getImageURL()).
+                error(R.drawable.ic_broken_image_150dp).
+                placeholder(R.drawable.ic_placeholder).
+                into(holder);
     }
 
     @Override
@@ -102,8 +75,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
 
     public void removeItem(int position) {
         if (position < 0) return;
+        Movie item = data.get(position);
+        data.remove(item);
 
-        data.remove(position);
+        //Only remove bad items from parse. don't remove the demo ones.
+        if (!item.getImageURL().startsWith("http")) {
+            ParseObject o = ParseObject.createWithoutData(AddMovieActivity.MOVIE, item.getObjectID());
+            o.deleteEventually(new DeleteCallback() {
+                @Override
+                public void done(ParseException e) {
+                    System.out.println(e == null ? "Removed" : e.getLocalizedMessage());
+                }
+            });
+        }
         notifyItemRemoved(position);
     }
 
@@ -113,7 +97,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
         notifyItemRangeInserted(0, movies.size());
     }
 
-    public static class DataViewHolder extends RecyclerView.ViewHolder {
+    public static class DataViewHolder extends RecyclerView.ViewHolder implements Target {
         @Bind(R.id.ivItem)
         ImageView ivItem;
         @Bind(R.id.tvtitle)
@@ -122,11 +106,38 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.DataVi
         TextView tvDescription;
         @Bind(R.id.cardView)
         CardView cardView;
-
+        @Bind(R.id.lineSep)
+        View lineSep;
 
         public DataViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            ivItem.setImageBitmap(bitmap);
+            Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    lineSep.setBackgroundColor(palette.getVibrantColor(0x000/*default*/));
+                    /* Vibrant, Vibrant Dark, Vibrant Light,
+                     Muted, Muted Dark, Muted Light */
+                }
+            });
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            ivItem.setImageDrawable(errorDrawable);
+            lineSep.setBackgroundColor(0x000);
+        }
+
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+            ivItem.setImageDrawable(placeHolderDrawable);
+            lineSep.setBackgroundColor(0x000);
         }
     }
 

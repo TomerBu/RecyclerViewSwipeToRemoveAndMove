@@ -24,12 +24,14 @@ public class Movie {
     private String title;
     private String description;
     private String imageURL;
+    private String objectID;
 
     //ctor
-    public Movie(String title, String description, String imageURL) {
-        setTitle(title);
-        setDescription(description);
-        setImageURL(imageURL);
+    public Movie(String title, String description, String imageURL, String objectID) {
+        this.title = title;
+        this.description = description;
+        this.imageURL = imageURL;
+        this.objectID = objectID;
     }
 
     //getters And Setters
@@ -51,6 +53,11 @@ public class Movie {
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
-
+    public String getObjectID() {
+        return objectID;
+    }
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
+    }
 
 }

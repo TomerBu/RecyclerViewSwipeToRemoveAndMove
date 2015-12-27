@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         String title = item.getString(AddMovieActivity.TITLE);
                         String description = item.getString(AddMovieActivity.DESCRIPTION);
                         String posterURL = item.getString(AddMovieActivity.POSTER);
-                        Movie m = new Movie(title, description, posterURL);
+                        Movie m = new Movie(title, description, posterURL, item.getObjectId());
                         movieList.add(m);
                     }
                     initRecyclerView(movieList);
@@ -99,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
     private List<Movie> initDummyData() {
         List<Movie> movies = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            movies.add(new Movie("Batman vs Superman", "Following the destruction of Metropolis, Batman embarks on a personal vendetta against Superman ", "http://images.fandango.com/MDCsite/images/featured/201512/the-hidden-plot-of-batman-vs-superman-dawn-of-justice-593860.jpg"));
-            movies.add(new Movie("X-Men: Apocalypse", "X-Men: Apocalypse is an upcoming American superhero film based on the X-Men characters that appear in Marvel Comics ", "https://c2.staticflickr.com/8/7446/15818000683_c49472e88b_b.jpg"));
-            movies.add(new Movie("Captain America: Civil War", "A feud between Captain America and Iron Man leaves the Avengers in turmoil.", "http://d.ibtimes.co.uk/en/full/1416337/captain-america-3.jpg"));
-            movies.add(new Movie("Kung Fu Panda 3", "After reuniting with his long-lost father, Po  must train a village of pandas", "https://upload.wikimedia.org/wikipedia/en/e/e6/Kung_Fu_Panda_3_poster.jpg"));
-            movies.add(new Movie("Warcraft", "Fleeing their dying home to colonize another, fearsome orc warriors invade the peaceful realm of Azeroth.", "http://assets.vg247.com/current//2015/07/warcraft_movie_lothar.jpg-large.jpg"));
-            movies.add(new Movie("Alice in Wonderland", "Alice in Wonderland: Through the Looking Glass ", "http://vignette1.wikia.nocookie.net/disney/images/7/7e/Alice_In_Wonderland_(2010)_cover.jpg/revision/latest?cb=20120519233959"));
+            movies.add(new Movie("Batman vs Superman", "Following the destruction of Metropolis, Batman embarks on a personal vendetta against Superman ", "http://images.fandango.com/MDCsite/images/featured/201512/the-hidden-plot-of-batman-vs-superman-dawn-of-justice-593860.jpg","1"));
+            movies.add(new Movie("X-Men: Apocalypse", "X-Men: Apocalypse is an upcoming American superhero film based on the X-Men characters that appear in Marvel Comics ", "https://c2.staticflickr.com/8/7446/15818000683_c49472e88b_b.jpg","2"));
+            movies.add(new Movie("Captain America: Civil War", "A feud between Captain America and Iron Man leaves the Avengers in turmoil.", "http://d.ibtimes.co.uk/en/full/1416337/captain-america-3.jpg","3"));
+            movies.add(new Movie("Kung Fu Panda 3", "After reuniting with his long-lost father, Po  must train a village of pandas", "https://upload.wikimedia.org/wikipedia/en/e/e6/Kung_Fu_Panda_3_poster.jpg","4"));
+            movies.add(new Movie("Warcraft", "Fleeing their dying home to colonize another, fearsome orc warriors invade the peaceful realm of Azeroth.", "http://assets.vg247.com/current//2015/07/warcraft_movie_lothar.jpg-large.jpg","5"));
+            movies.add(new Movie("Alice in Wonderland", "Alice in Wonderland: Through the Looking Glass ", "http://vignette1.wikia.nocookie.net/disney/images/7/7e/Alice_In_Wonderland_(2010)_cover.jpg/revision/latest?cb=20120519233959","6"));
         }
 
 
