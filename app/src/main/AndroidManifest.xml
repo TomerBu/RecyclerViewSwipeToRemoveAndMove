@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.college.android.itomer.recyclerviewswipetoremoveandmove">
+<manifest package="org.college.android.itomer.recyclerviewswipetoremoveandmove"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".AppManager"
@@ -14,10 +15,10 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="Plathp5UOC3kLwsHzk3VRWpbNwNLKZEzptCtDCCA" />
+            android:value="Plathp5UOC3kLwsHzk3VRWpbNwNLKZEzptCtDCCA"/>
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="31hL4wqnU7eOAjPiU5GmOKS8BvvTbO4fYM2KzwaB" />
+            android:value="31hL4wqnU7eOAjPiU5GmOKS8BvvTbO4fYM2KzwaB"/>
 
         <activity
             android:name=".MainActivity"
@@ -29,9 +30,9 @@
             android:label="@string/title_activity_add_movie"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

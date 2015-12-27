@@ -44,4 +44,16 @@
         app:backgroundTint="#26c6da"
         android:src="@drawable/ic_add_circle_24dp" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/tilPoster"
+
+        app:layout_anchorGravity="bottom|start|left"
+
+        android:background="#aed581"
+        app:backgroundTint="#9ccc65"
+        android:src="@drawable/ic_photo_camera_white_24dp" />
+
 </android.support.design.widget.CoordinatorLayout>
